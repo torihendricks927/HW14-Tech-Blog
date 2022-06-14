@@ -15,12 +15,33 @@ router.get('/', async (req, res) => {
     });
 
     // Serialize data so the template can read it
-    const projects = projectData.map((project) => project.get({ plain: true }));
+    // const projects = projectData.map((project) => project.get({ plain: true }));
 
+
+    const blogs = [
+      {
+        title: "title",
+        content: "content",
+        author: "author",
+        date: "6/14/22"
+      },
+      {
+        title: "title",
+        content: "content",
+        author: "author",
+        date: "6/14/22"
+      },
+      {
+        title: "title",
+        content: "content",
+        author: "author",
+        date: "6/14/22"
+      },
+    ];
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      projects, 
-      logged_in: req.session.logged_in 
+      blogs, 
+      logged_in: true
     });
   } catch (err) {
     res.status(500).json(err);
