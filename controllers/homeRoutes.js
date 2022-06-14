@@ -38,6 +38,7 @@ router.get('/', async (req, res) => {
         date: "6/14/22"
       },
     ];
+
     // Pass serialized data and session flag into template
     res.render('homepage', { 
       blogs, 
