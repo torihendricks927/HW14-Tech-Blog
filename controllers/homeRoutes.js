@@ -15,55 +15,52 @@ router.get('/', async (req, res) => {
     });
 
 //     // Serialize data so the template can read it
-//     // const projects = projectData.map((project) => project.get({ plain: true }));
+  const blogs = projectData.map((project) => project.get({ plain: true }));
 
 
-    const blogs = [
-      {
-        title: "title",
-        content: "content",
-        author: "author",
-        date: "6/14/22"
-      },
-      {
-        title: "title",
-        content: "content",
-        author: "author",
-        date: "6/14/22"
-      },
-      {
-        title: "title",
-        content: "content",
-        author: "author",
-        date: "6/14/22"
-      },
-    ];
+    // const blogs = [
+    //   {
+    //     title: "title",
+    //     content: "content",
+    //     author: "author",
+    //     date: "6/14/22"
+    //   },
+    //   {
+    //     title: "title",
+    //     content: "content",
+    //     author: "author",
+    //     date: "6/14/22"
+    //   },
+    //   {
+    //     title: "title",
+    //     content: "content",
+    //     author: "author",
+    //     date: "6/14/22"
+    //   },
+    // ];
 
 //     // Pass serialized data and session flag into template
+console.log('blogs', blogs);
     res.render('homepage', { 
       blogs, 
-      logged_in: true
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/project/:id', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
   try {
-    const projectData = await Project.findByPk(req.params.id, {
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
+    const userData = await User.findByPk(req.session.user_id, {
+      attributes: { exclude: ['password'] },
+      include: [{ model: Post }],
     });
 
-    const project = projectData.get({ plain: true });
+    const user = userData.get({ plain: true });
 
-    res.render('project', {
-      ...project,
+    res.render('dashboard', {
+      ...user,
       logged_in: req.session.logged_in
     });
   } catch (err) {
