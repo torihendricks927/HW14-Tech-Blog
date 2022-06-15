@@ -79,6 +79,28 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
+router.get('/create-blog', (req,res) => {
+  res.render('create-blog', {
+    logged_in: true,
+  });
+});
+
+
+router.get('/edit-blog', (req,res) => {
+
+   const blog = 
+      {
+        title: "title",
+        content: "content",
+        author: "author",
+        date: "6/14/22",
+      };
+
+  res.render('edit-blog', {
+    ...blog,
+    logged_in: true,
+  });
+});
 
 // router.get('/blogs/:id', async (req, res) => {
   
