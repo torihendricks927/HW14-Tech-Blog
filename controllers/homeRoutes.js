@@ -19,27 +19,6 @@ router.get('/', async (req, res) => {
   const blogs = projectData.map((project) => project.get({ plain: true }));
 
 
-    // const blogs = [
-    //   {
-    //     title: "title",
-    //     content: "content",
-    //     author: "author",
-    //     date: "6/14/22"
-    //   },
-    //   {
-    //     title: "title",
-    //     content: "content",
-    //     author: "author",
-    //     date: "6/14/22"
-    //   },
-    //   {
-    //     title: "title",
-    //     content: "content",
-    //     author: "author",
-    //     date: "6/14/22"
-    //   },
-    // ];
-
 //     // Pass serialized data and session flag into template
 console.log('blogs', blogs);
     res.render('homepage', { 
@@ -102,23 +81,33 @@ router.get('/edit-blog', (req,res) => {
   });
 });
 
-// router.get('/blogs/:id', async (req, res) => {
-  
-//     const userData = await User.findByPk(req.session.user_id, {
-//       attributes: { exclude: ['password'] },
-//       include: [{ model: Project }],
-//     });
+router.get('/blogs/:id', (req,res) => {
 
-//     const user = userData.get({ plain: true });
+  const blog = 
+     {
+       title: 'title',
+       content: 'content',
+       author: 'author',
+       date: '6/14/22',
+       comments: [
+       {
+         content: 'comment',
+         author: 'name',
+         date: '6/15/22',
+       },
+       {
+        content: 'comment2',
+        author: 'name',
+        date: '6/15/22',
+      }
+       ]};
 
-//     res.render('profile', {
-//       ...user,
-//       logged_in: true
-//     });
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+ res.render('blog-page', {
+   ...blog,
+   logged_in: true,
+ });
+});
+
 
 router.get('/blogs/:id', async (req, res) => {
   const postData = await Post.findByPk(req.params.id, {
