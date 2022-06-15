@@ -1,22 +1,22 @@
 const router = require('express').Router();
 const res = require('express/lib/response');
-const { Project, User } = require('../models');
+const { Post, Comment, User } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   try {
-    // Get all projects and JOIN with user data
-    const projectData = await Project.findAll({
+    // Get all posts
+    const postData = await Post.findAll({
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['username'],
         },
       ],
     });
 
 //     // Serialize data so the template can read it
-  const blogs = projectData.map((project) => project.get({ plain: true }));
+  const blogs = postData.map((post) => post.get({ plain: true }));
 
 
 //     // Pass serialized data and session flag into template
@@ -58,13 +58,15 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
+
+// used to create new post
 router.get('/create-blog', (req,res) => {
   res.render('create-blog', {
     logged_in: true,
   });
 });
 
-
+// used to edit a post
 router.get('/edit-blog', (req,res) => {
 
    const blog = 
@@ -81,34 +83,34 @@ router.get('/edit-blog', (req,res) => {
   });
 });
 
-router.get('/blogs/:id', (req,res) => {
+// router.get('/blogs/:id', async (req,res) => {
 
-  const blog = 
-     {
-       title: 'title',
-       content: 'content',
-       author: 'author',
-       date: '6/14/22',
-       comments: [
-       {
-         content: 'comment',
-         author: 'name',
-         date: '6/15/22',
-       },
-       {
-        content: 'comment2',
-        author: 'name',
-        date: '6/15/22',
-      }
-       ]};
+//   const blog = 
+//      {
+//        title: 'title',
+//        content: 'content',
+//        author: 'author',
+//        date: '6/14/22',
+//        comments: [
+//        {
+//          content: 'comment',
+//          author: 'name',
+//          date: '6/15/22',
+//        },
+//        {
+//         content: 'comment2',
+//         author: 'name',
+//         date: '6/15/22',
+//       }
+//        ]};
 
- res.render('blog-page', {
-   ...blog,
-   logged_in: true,
- });
-});
+//  res.render('blog-page', {
+//    ...blog,
+//    logged_in: true,
+//  });
+// });
 
-
+// obtains all post within that blog for certain user
 router.get('/blogs/:id', async (req, res) => {
   const postData = await Post.findByPk(req.params.id, {
     include: [
