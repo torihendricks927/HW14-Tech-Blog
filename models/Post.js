@@ -11,8 +11,15 @@ Post.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    title: DataTypes.STRING,
-    content: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+    },
+    content: {
+      type: DataTypes.STRING,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     sequelize,
